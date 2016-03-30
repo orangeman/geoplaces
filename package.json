@@ -1,0 +1,20 @@
+{
+  "name": "geodata",
+  "version": "0.0.0",
+  "description": "geonames.org preprocessing",
+  "main": "index.js",
+  "dependencies": {
+    "csv-streamify": "^3.0.3",
+    "event-stream": "^3.3.2",
+    "geonames-stream": "^2.0.3",
+    "level": "^1.3.0",
+    "level-places": "^2.5.0",
+    "request": "^2.65.0",
+    "through2": "^2.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "orangeman",
+  "license": "MIT"
+}
