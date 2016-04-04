@@ -216,7 +216,7 @@ state =
     "06":	"Steiermark"
     "05":	"Salzburg"
     "04":	"Oberösterreich"
-    "03":	"Unterösterreich"
+    "03":	"Niederösterreich"
     "02":	"Kärnten"
     "01":	"Burgenland"
   "CZ":
