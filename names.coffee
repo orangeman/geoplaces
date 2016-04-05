@@ -76,7 +76,7 @@ module.exports = () ->
         ops = []
         done = {}
         console.log "generate for #{lang}.."
-        for i in [0..4]
+        for i in [0..9]
           for p in places
             suggest p.name[0..i].toUpperCase(), lang, p
           console.log " #{i + 1} chars: #{c} lists #{a/c} avg entries (removed #{d/c} Doubletten)"
@@ -89,3 +89,8 @@ module.exports = () ->
 
       language "cs", () -> language "de", () -> language "en"
       #language "de"
+
+#level("./data/names").createReadStream()
+#.pipe through.obj (p, enc, next) ->
+#  console.log p.key + " -> " + p.value if p.key.match /FRANKF/
+#  next()

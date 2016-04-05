@@ -68,8 +68,9 @@ module.exports =
               append += 1 if i == 1
               alts += 1 if i == 2
               place.put k, v, () -> cb v
-              if v.name == "Bayerbach"
-                console.log " + place #{count}: #{k} #{JSON.stringify v.latlon} pop=#{v.population} #{i}"
+              if i < 2
+                tmp.put "id:" + v._id, k
+              #console.log " + place #{count}: #{k} #{JSON.stringify v.latlon} pop=#{v.population} #{i}"
             else
               if p.feature_code.match(/ADM/) && v.feature_code.match(/PPL/)
                 if !v.population
@@ -77,17 +78,20 @@ module.exports =
                   console.log "   + keep #{p.feature_code} #{p.name} #{p.population}  because batter than  #{v.feature_code} #{v.population}"
                   (p.ambig ||= []).push v
                   place.put k, p, () -> cb p
+                  tmp.put "id:" + v._id, k
                 else
                   replace += 1
                   console.log "   + replace #{p.feature_code} #{p.name} #{p.population}  with  #{v.feature_code} #{v.population}"
                   (v.ambig ||= []).push p
                   place.put k, v, () -> cb v
+                  tmp.put "id:" + v._id, k
               else if i == 0
                 if v.feature_code.match(/PPLX/)
                   if v.name.match /Bayerbach/
                     console.log "SKIP #{v.name} #{v.feature_code} #{v.population}   keep #{p.name} #{p.feature_code} #{p.population}"
                   (p.ambig ||= []).push v
                   place.put k, p, () -> cb p
+                  tmp.put "id:" + p._id, k
                   ambig += 1
                   return
                 adm = (ex, ca, l) ->
@@ -110,11 +114,13 @@ module.exports =
                         console.log "   NO PLACE FOR #{k} #{v.feature_code} #{v.population}   already #{p.feature_code} #{p.population}"
                         (p.ambig ||= []).push v
                         place.put k, p, () -> cb p
+                        tmp.put "id:" + v._id, k
               else if i < 2
                 ambig += 1
                 console.log "   NO PLACE FOR #{k} #{v.feature_code} #{v.population}   already #{p.feature_code} #{p.population}"
                 (p.ambig ||= []).push v
                 place.put k, p, () -> cb p
+                tmp.put "id:" + v._id, k
               else
                 taken += 1
                 cb()
