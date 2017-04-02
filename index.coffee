@@ -37,8 +37,10 @@ module.exports = (opts, done) ->
                 cb p || error: "not found"
 
             http: (req, res) ->
-              if m = req.url.match /q=(.+?)&?/
-                autocomplete decodeURI(m[1]), "ar", (p) ->
+              if m = req.url.split("&")[0].match /q=(.+)/
+                lang = req.url.split("?lang=")[1] ||
+                req.headers["accept-language"]?.split("-")[0].split(",")[0]
+                autocomplete decodeURI(m[1]), lang, (p) ->
                   res.setHeader "content-type", "text/plain; charset=UTF-8"
                   res.end p
               else if m = req.url.match /place\/(.+)\/?/
