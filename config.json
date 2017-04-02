@@ -1,0 +1,14 @@
+{
+  "countries": {
+    "ma": "Morocco",
+    "at": "Germany"
+  },
+  "languages": {
+    "ar": "arabic",
+    "de": "german",
+    "en": "english"
+  },
+  "db": "db",
+  "listLength": 4,
+  "charLength": 1
+}

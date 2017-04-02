@@ -1,32 +1,50 @@
+fs = require "fs"
 
+module.exports = (opts, done) ->
 
+  defaults =
+    db: "db"
+    countries:
+      de: "germany"
+    languages:
+      de: "german"
+      en: "english"
+    listLength: 7
+    charLength: 2
 
-if process.argv[2].toLowerCase() == "import"
+  (opts ||= {})[k] ||= v for k,v of defaults
 
-  if process.argv[3].toLowerCase() == "alts"
-    console.log " \n# importing alternate names.."
-    require("./geonames").storeAlts()
+  if !fs.existsSync opts.db
+    fs.mkdirSync opts.db
 
-  else if process.argv[3].toLowerCase() == "geoip"
-    console.log "\n importing geo ip ranges.."
-    require("geoip-resolve").import("./data/geoip")
+  gn = require("./geonames")
+  countries = (c for c,v of opts.countries)
+  load = (i) ->
+    if i < countries.length
+      gn.storeCountry countries[i], opts.db, () -> load i + 1
+    else
+      opts.lang = (l for l,v of opts.languages)
+      gn.processPlaces opts.lang, opts.db, (places) ->
+        require("./names") opts, places, (names) ->
+          console.log "places initialized\n"
+          done
+            autocomplete: autocomplete = (q, lang, cb) ->
+              names.get "#{lang}:#{q.toUpperCase()}", (e, n) ->
+                cb n || "not found"
 
-  else
-    console.log " \n# importing country " + process.argv[3]
-    require("./geonames").storeCountry process.argv[3]
-    #countries = process.argv[3..-1]
-    #(next = () -> gn.storeCountry c, next if c = countries.pop())()
+            lookup: lookup = (id, cb) ->
+              places.get id.toUpperCase(), (e, p) ->
+                cb p || error: "not found"
 
-
-else if process.argv[2].toLowerCase() == "export"
-
-  if process.argv[3].toLowerCase() == "places"
-    console.log " \n# exporting places.. "
-    require("./geonames").processPlaces()
-
-  else if process.argv[3].toLowerCase() == "names"
-    console.log " \n# exporting names.. "
-    require("./names")()
-
-  else
-    console.log "computing distance table.. "
+            http: (req, res) ->
+              if m = req.url.match /q=(.+?)&?/
+                autocomplete m[1], "ar", (p) ->
+                  res.setHeader "content-type", "text/plain; charset=UTF-8"
+                  res.end p
+              else if m = req.url.match /place\/(.+)\/?/
+                lookup m[1], (p) ->
+                  res.setHeader "content-type", "text/json; charset=UTF-8"
+                  res.end JSON.stringify p
+              else
+                res.end "no place api call"
+  load 0
