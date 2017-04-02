@@ -38,11 +38,11 @@ module.exports = (opts, done) ->
 
             http: (req, res) ->
               if m = req.url.match /q=(.+?)&?/
-                autocomplete m[1], "ar", (p) ->
+                autocomplete decodeURI(m[1]), "ar", (p) ->
                   res.setHeader "content-type", "text/plain; charset=UTF-8"
                   res.end p
               else if m = req.url.match /place\/(.+)\/?/
-                lookup m[1], (p) ->
+                lookup decodeURI(m[1]), (p) ->
                   res.setHeader "content-type", "text/json; charset=UTF-8"
                   res.end JSON.stringify p
               else
