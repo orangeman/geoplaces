@@ -241,7 +241,9 @@ module.exports =
                   "  no place for #{ambig} places.\n" +
                   "  places database size #{(size/1000000).toFixed 3} MB  " +
                   "time #{((new Date().getTime() - start) / 60000).toFixed 1} min\n"
-                done(place) if done
+                exec "rm -r #{db}/names", (err, out) ->
+                  console.log "names db deleted"
+                  done(place) if done
 
 
 
