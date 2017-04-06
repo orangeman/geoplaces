@@ -1,6 +1,6 @@
 {
   "name": "geoplaces",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "geo location service",
   "main": "index.js",
   "scripts": {
@@ -16,6 +16,7 @@
     "du": "^0.1.0",
     "event-stream": "^3.3.4",
     "geonames-stream": "^2.1.0",
+    "http-i18n": "0.0.4",
     "level": "^1.6.0",
     "level-places": "^2.5.0",
     "minimist": "^1.2.0",
