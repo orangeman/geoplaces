@@ -55,4 +55,8 @@ module.exports = (opts, done) ->
                   res.end JSON.stringify p
               else
                 res.end "no place api call"
+
+            close: () ->
+              names.close()
+              places.close()
   load 0

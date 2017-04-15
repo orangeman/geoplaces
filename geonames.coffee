@@ -97,6 +97,7 @@ module.exports =
     tmp.get "changed", (err, changed) ->
       if not changed
         console.log "places already exported\n"
+        tmp.close()
         done place if done
         return
       start = new Date().getTime()
@@ -243,6 +244,7 @@ module.exports =
                   "time #{((new Date().getTime() - start) / 60000).toFixed 1} min\n"
                 exec "rm -r #{db}/names", (err, out) ->
                   console.log "names db deleted"
+                  tmp.close()
                   done(place) if done
 
 
