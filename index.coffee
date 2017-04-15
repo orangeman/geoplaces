@@ -35,7 +35,13 @@ module.exports = (opts, done) ->
 
             lookup: lookup = (id, cb) ->
               places.get id.toUpperCase(), (e, p) ->
-                cb p || error: "not found"
+                return cb p if p
+                if !p && (s = id.split(",")).length > 1
+                  return lookup s[0], cb
+                if !p && id.split(" ").length > 1
+                  return lookup id.substring(0, id.lastIndexOf(" ")), cb
+                else
+                  cb error: "#{id} not found"
 
             http: (req, res) ->
               if m = req.url.match /q=(.+?)(&|$)/
