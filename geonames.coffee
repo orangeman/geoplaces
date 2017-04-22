@@ -52,6 +52,8 @@ module.exports =
     tmp.get "country:#{country}", (err, alreadyDone) ->
       if alreadyDone
         console.log "country #{country} already imported\n"
+        tmp.close()
+        tmp = null
         cb() if cb
         return
       count = 0
@@ -87,6 +89,8 @@ module.exports =
           process.stdout.write "Done: #{country.toUpperCase()}" +
             "  imported #{count} populated places" +
             "                                               \n\n"
+          tmp.close()
+          tmp = null
           cb() if cb
 
 
@@ -98,6 +102,7 @@ module.exports =
       if not changed
         console.log "places already exported\n"
         tmp.close()
+        tmp = null
         done place if done
         return
       start = new Date().getTime()
@@ -245,6 +250,7 @@ module.exports =
                 exec "rm -r #{db}/names", (err, out) ->
                   console.log "names db deleted"
                   tmp.close()
+                  tmp = null
                   done(place) if done
 
 
