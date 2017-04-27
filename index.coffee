@@ -34,6 +34,7 @@ module.exports = (opts, done) ->
                 cb n || "not found"
 
             lookup: lookup = (id, cb) ->
+              return cb error: "no place id" unless id
               places.get id.toUpperCase(), (e, p) ->
                 return cb p if p
                 if !p && (s = id.split(",")).length > 1

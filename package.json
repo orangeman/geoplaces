@@ -1,6 +1,6 @@
 {
   "name": "geoplaces",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "geo location service",
   "main": "index.js",
   "scripts": {
